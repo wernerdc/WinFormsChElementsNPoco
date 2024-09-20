@@ -54,6 +54,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(634, 304);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellClick += DataGridView1_CellClick;
             // 
             // panel1
             // 
@@ -141,7 +142,7 @@
             // comboBoxZustand
             // 
             comboBoxZustand.FormattingEnabled = true;
-            comboBoxZustand.Items.AddRange(new object[] { "Gas", "Feststoff", "Flüssigkeit", "Unbekannt" });
+            comboBoxZustand.Items.AddRange(new object[] { "Unbekannt", "Gas", "Feststoff", "Flüssigkeit" });
             comboBoxZustand.Location = new Point(311, 27);
             comboBoxZustand.Name = "comboBoxZustand";
             comboBoxZustand.Size = new Size(121, 23);

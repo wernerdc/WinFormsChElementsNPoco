@@ -30,28 +30,34 @@ namespace WinFormsChElementsNPoco
             dataGridView1.DataSource = list;
         }
 
-        private List<ChElement> KontakteLaden()
-        {
-            List<ChElement> lst = new();
-            try
-            {
-                using MySqlConnection connection = new MySqlConnection(ConnectionString);
-                using IDatabase db = new Database(connection);
-                connection.Open();
-                string sql = "order by nachname, vorname";
-                lst = db.Fetch<ChElement>(sql);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            return lst;
-        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             List<ChElement> list = DBHelper.LoadElements();
             UpdateDataGridView(list);
+        }
+
+        private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ChElement? element = dataGridView1.CurrentRow.DataBoundItem as ChElement;
+            if (element == null) return;
+
+            FillInputTextBoxes(element);
+        }
+
+        private void FillInputTextBoxes(ChElement element)
+        {
+            try
+            {   
+                int oZahl = int.Parse(textBoxOZahl.Text);
+                string name = textBoxName.Text;
+                string symbol = textBoxSymbol.Text;
+                int zustsnd = comboBoxZustand.SelectedIndex;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }
