@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
             panel1 = new Panel();
+            numUpDownOZahl = new NumericUpDown();
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
@@ -40,24 +40,16 @@
             comboBoxZustand = new ComboBox();
             textBoxName = new TextBox();
             textBoxSymbol = new TextBox();
-            textBoxOZahl = new TextBox();
             buttonAdd = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            dataGridView1 = new DataGridView();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numUpDownOZahl).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Dock = DockStyle.Bottom;
-            dataGridView1.Location = new Point(0, 146);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(634, 304);
-            dataGridView1.TabIndex = 0;
-            dataGridView1.CellClick += DataGridView1_CellClick;
             // 
             // panel1
             // 
+            panel1.Controls.Add(numUpDownOZahl);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(label3);
             panel1.Controls.Add(label2);
@@ -68,18 +60,25 @@
             panel1.Controls.Add(comboBoxZustand);
             panel1.Controls.Add(textBoxName);
             panel1.Controls.Add(textBoxSymbol);
-            panel1.Controls.Add(textBoxOZahl);
             panel1.Controls.Add(buttonAdd);
-            panel1.Dock = DockStyle.Fill;
+            panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(634, 146);
+            panel1.Size = new Size(499, 138);
             panel1.TabIndex = 1;
+            // 
+            // numUpDownOZahl
+            // 
+            numUpDownOZahl.Location = new Point(12, 28);
+            numUpDownOZahl.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
+            numUpDownOZahl.Name = "numUpDownOZahl";
+            numUpDownOZahl.Size = new Size(81, 23);
+            numUpDownOZahl.TabIndex = 0;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(311, 9);
+            label4.Location = new Point(280, 9);
             label4.Name = "label4";
             label4.Size = new Size(50, 15);
             label4.TabIndex = 11;
@@ -88,7 +87,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(205, 9);
+            label3.Location = new Point(160, 9);
             label3.Name = "label3";
             label3.Size = new Size(50, 15);
             label3.TabIndex = 10;
@@ -114,95 +113,106 @@
             // 
             // buttonExit
             // 
-            buttonExit.Location = new Point(525, 112);
+            buttonExit.Location = new Point(390, 99);
             buttonExit.Name = "buttonExit";
             buttonExit.Size = new Size(97, 23);
             buttonExit.TabIndex = 7;
             buttonExit.Text = "Beenden";
             buttonExit.UseVisualStyleBackColor = true;
+            buttonExit.Click += buttonExit_Click;
             // 
             // buttonDelete
             // 
-            buttonDelete.Location = new Point(525, 83);
+            buttonDelete.Location = new Point(390, 70);
             buttonDelete.Name = "buttonDelete";
             buttonDelete.Size = new Size(97, 23);
             buttonDelete.TabIndex = 6;
             buttonDelete.Text = "Löschen";
             buttonDelete.UseVisualStyleBackColor = true;
+            buttonDelete.Click += buttonDelete_Click;
             // 
             // buttonEdit
             // 
-            buttonEdit.Location = new Point(525, 54);
+            buttonEdit.Location = new Point(390, 41);
             buttonEdit.Name = "buttonEdit";
             buttonEdit.Size = new Size(97, 23);
             buttonEdit.TabIndex = 5;
             buttonEdit.Text = "Ändern";
             buttonEdit.UseVisualStyleBackColor = true;
+            buttonEdit.Click += buttonEdit_Click;
             // 
             // comboBoxZustand
             // 
+            comboBoxZustand.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxZustand.FormattingEnabled = true;
             comboBoxZustand.Items.AddRange(new object[] { "Unbekannt", "Gas", "Feststoff", "Flüssigkeit" });
-            comboBoxZustand.Location = new Point(311, 27);
+            comboBoxZustand.Location = new Point(280, 27);
             comboBoxZustand.Name = "comboBoxZustand";
-            comboBoxZustand.Size = new Size(121, 23);
-            comboBoxZustand.TabIndex = 4;
+            comboBoxZustand.Size = new Size(87, 23);
+            comboBoxZustand.TabIndex = 3;
             // 
             // textBoxName
             // 
-            textBoxName.Location = new Point(205, 27);
+            textBoxName.Location = new Point(160, 27);
+            textBoxName.MaxLength = 30;
             textBoxName.Name = "textBoxName";
-            textBoxName.Size = new Size(100, 23);
-            textBoxName.TabIndex = 3;
+            textBoxName.Size = new Size(114, 23);
+            textBoxName.TabIndex = 2;
             // 
             // textBoxSymbol
             // 
             textBoxSymbol.Location = new Point(99, 27);
+            textBoxSymbol.MaxLength = 2;
             textBoxSymbol.Name = "textBoxSymbol";
-            textBoxSymbol.Size = new Size(100, 23);
-            textBoxSymbol.TabIndex = 2;
-            // 
-            // textBoxOZahl
-            // 
-            textBoxOZahl.Location = new Point(12, 27);
-            textBoxOZahl.Name = "textBoxOZahl";
-            textBoxOZahl.Size = new Size(81, 23);
-            textBoxOZahl.TabIndex = 1;
+            textBoxSymbol.Size = new Size(55, 23);
+            textBoxSymbol.TabIndex = 1;
             // 
             // buttonAdd
             // 
-            buttonAdd.Location = new Point(525, 25);
+            buttonAdd.Location = new Point(390, 12);
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Size = new Size(97, 23);
-            buttonAdd.TabIndex = 0;
+            buttonAdd.TabIndex = 4;
             buttonAdd.Text = "Hinzufügen";
             buttonAdd.UseVisualStyleBackColor = true;
+            buttonAdd.Click += buttonAdd_Click;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.BorderStyle = BorderStyle.None;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1.Location = new Point(0, 138);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(499, 304);
+            dataGridView1.TabIndex = 8;
+            dataGridView1.CellClick += DataGridView1_CellClick;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(634, 450);
-            Controls.Add(panel1);
+            ClientSize = new Size(499, 442);
             Controls.Add(dataGridView1);
+            Controls.Add(panel1);
             Name = "Form1";
             Text = "ChElementsNPoco";
             Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numUpDownOZahl).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DataGridView dataGridView1;
         private Panel panel1;
+        private DataGridView dataGridView1;
         private Button buttonAdd;
         private ComboBox comboBoxZustand;
         private TextBox textBoxName;
         private TextBox textBoxSymbol;
-        private TextBox textBoxOZahl;
         private Label label4;
         private Label label3;
         private Label label2;
@@ -210,5 +220,6 @@
         private Button buttonExit;
         private Button buttonDelete;
         private Button buttonEdit;
+        private NumericUpDown numUpDownOZahl;
     }
 }

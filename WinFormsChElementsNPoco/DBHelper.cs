@@ -20,7 +20,7 @@ namespace WinFormsChElementsNPoco
             try
             {
                 using MySqlConnection connection = new MySqlConnection(ConnectionString);
-                using IDatabase db = new Database(connection);
+                using Database db = new Database(connection);
                 connection.Open();
                 string sql = "order by ordnungszahl";
                 list = db.Fetch<ChElement>(sql);
@@ -30,6 +30,51 @@ namespace WinFormsChElementsNPoco
                 Debug.WriteLine(ex);
             }
             return list;
+        }
+        
+        public static void AddElement(ChElement element)
+        {
+            try
+            {
+                using MySqlConnection connection = new MySqlConnection(ConnectionString);
+                using Database db = new Database(connection);
+                connection.Open();
+                db.Insert(element);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+        
+        public static void UpdateElement(ChElement element)
+        {
+            try
+            {
+                using MySqlConnection connection = new MySqlConnection(ConnectionString);
+                using Database db = new Database(connection);
+                connection.Open();
+                db.Update(element);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+        
+        public static void DeleteElement(ChElement element)
+        {
+            try
+            {
+                using MySqlConnection connection = new MySqlConnection(ConnectionString);
+                using Database db = new Database(connection);
+                connection.Open();
+                db.Delete(element);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }
