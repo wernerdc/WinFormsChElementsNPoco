@@ -11,8 +11,21 @@ namespace WinFormsChElementsNPoco
         public Form1()
         {
             InitializeComponent();
+            InitDatabase();
             InitDataGridView();
             comboBoxZustand.SelectedIndex = 0;
+        }
+
+        private void InitDatabase()
+        {
+            if (!DBHelper.CheckDatabaseExistence())
+            {
+                if (!DBHelper.CreateDatabase())
+                {
+                    MessageBox.Show("Database creation failed!", "ChElements", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void InitDataGridView()
@@ -60,14 +73,14 @@ namespace WinFormsChElementsNPoco
 
         private void UpdateDataGridView(List<ChElement> list)
         {
+            //list.Add(DBHelper.GetOne(3));       // single querry test
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = list;
         }
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            UpdateDataGridView(DBHelper.LoadElements());
+            UpdateDataGridView(DBHelper.GetAll());
         }
 
         private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -81,11 +94,10 @@ namespace WinFormsChElementsNPoco
             SetInputValues(element);
         }
 
-
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            DBHelper.AddElement(GetElementFromInput());
-            UpdateDataGridView(DBHelper.LoadElements());
+            DBHelper.AddOne(GetElementFromInput());
+            UpdateDataGridView(DBHelper.GetAll());
         }
 
         private void buttonEdit_Click(object sender, EventArgs e)
@@ -96,8 +108,8 @@ namespace WinFormsChElementsNPoco
             ChElement editedElement = GetElementFromInput();
             editedElement.ID = element.ID;
 
-            DBHelper.UpdateElement(editedElement);
-            UpdateDataGridView(DBHelper.LoadElements());
+            DBHelper.UpdateOne(editedElement);
+            UpdateDataGridView(DBHelper.GetAll());
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
@@ -105,8 +117,8 @@ namespace WinFormsChElementsNPoco
             if (dataGridView1.CurrentRow.DataBoundItem is not ChElement element)
                 return;
 
-            DBHelper.DeleteElement(element);
-            UpdateDataGridView(DBHelper.LoadElements());
+            DBHelper.DeleteOne(element);
+            UpdateDataGridView(DBHelper.GetAll());
         }
 
         private void buttonExit_Click(object sender, EventArgs e)

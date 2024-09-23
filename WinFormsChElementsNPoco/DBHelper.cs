@@ -10,11 +10,75 @@ using System.Threading.Tasks;
 
 namespace WinFormsChElementsNPoco
 {
-    internal class DBHelper
+    internal abstract class DBHelper
     {
-        private static string ConnectionString { get; } = ConfigurationManager.ConnectionStrings["mariadb"].ConnectionString;
+        // admin account
+        private static string ConnectionStringAdmin { get; }      
+                = ConfigurationManager.ConnectionStrings["mariadb_admin"].ConnectionString;
+        // should be ordinary user account (here both are admin)
+        private static string ConnectionString { get; } 
+                = ConfigurationManager.ConnectionStrings["mariadb"].ConnectionString;
 
-        public static List<ChElement> LoadElements()
+        public static bool CheckDatabaseExistence()
+        {
+            int count = 0;
+            try
+            {
+                using MySqlConnection connection = new MySqlConnection(ConnectionStringAdmin);
+                connection.Open();
+
+                string sql = "SELECT COUNT(SCHEMA_NAME) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = @dbName";
+                using MySqlCommand cmd = new MySqlCommand(sql, connection);
+                cmd.Parameters.Add("@dbName", MySqlDbType.VarChar).Value = "ChElements";
+
+                count = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
+            Debug.WriteLine($"DBHelper - Database found: {count}");
+            return (count > 0);
+        }
+
+        public static bool CreateDatabase()
+        {
+            int count = -1;
+            try
+            {
+                using MySqlConnection connection = new MySqlConnection(ConnectionStringAdmin);
+                connection.Open();
+                // # Datenbank erstellen
+                string sqlCreateDB = "CREATE DATABASE ChElements";
+                // # Tabelle für Kontakte erstellen
+                string sqlCreateTable = "CREATE TABLE element(" +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "ordnungszahl INT(3), " +
+                        "name VARCHAR(50)," +
+                        "symbol VARCHAR(2)," +
+                        "zustand INT(1)," +
+                        "changedAt DATETIME," +
+                        "createdAt DATETIME)";
+
+                using MySqlCommand cmdCreateDb = new MySqlCommand(sqlCreateDB, connection);
+                cmdCreateDb.ExecuteNonQuery();
+
+                connection.ChangeDatabase("ChElements");
+                using MySqlCommand cmdCreateTable = new MySqlCommand(sqlCreateTable, connection);
+                count = cmdCreateTable.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
+            
+            Debug.WriteLine($"DBHelper - Tables created: {count +1}");
+            return (count >= 0);
+        }
+
+        public static List<ChElement> GetAll()
         {
             List<ChElement> list = new();
             try
@@ -22,7 +86,7 @@ namespace WinFormsChElementsNPoco
                 using MySqlConnection connection = new MySqlConnection(ConnectionString);
                 using Database db = new Database(connection);
                 connection.Open();
-                string sql = "order by ordnungszahl";
+                string sql = "ORDER BY ordnungszahl";
                 list = db.Fetch<ChElement>(sql);
             }
             catch (Exception ex)
@@ -32,7 +96,26 @@ namespace WinFormsChElementsNPoco
             return list;
         }
         
-        public static void AddElement(ChElement element)
+        public static ChElement GetOne(int id)
+        {
+            ChElement? element = null;
+            try
+            {
+                using MySqlConnection connection = new MySqlConnection(ConnectionString);
+                using Database db = new Database(connection);
+                connection.Open();
+                element = db.SingleById<ChElement>(id);
+                //string sql = "WHERE id = @0";
+                //element = db.Single<ChElement>("WHERE id = @0", id);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return element ?? new ChElement();
+        }
+        
+        public static void AddOne(ChElement element)
         {
             try
             {
@@ -47,7 +130,7 @@ namespace WinFormsChElementsNPoco
             }
         }
         
-        public static void UpdateElement(ChElement element)
+        public static void UpdateOne(ChElement element)
         {
             try
             {
@@ -62,7 +145,7 @@ namespace WinFormsChElementsNPoco
             }
         }
         
-        public static void DeleteElement(ChElement element)
+        public static void DeleteOne(ChElement element)
         {
             try
             {

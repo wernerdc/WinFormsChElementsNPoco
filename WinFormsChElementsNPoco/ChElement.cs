@@ -19,6 +19,10 @@ namespace WinFormsChElementsNPoco
             Symbol = symbol;
             Zustand = zustand;
         }
+        public ChElement() : this(0, "", "", 0)
+        {
+        }
+
         public int ID { get; set; } = 0;
         public int Ordnungszahl { get; set; }
         public string Name { get; set; }
