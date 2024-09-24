@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace WinFormsChElementsNPoco
 {
+    // Database helper class
+    // using MySqlConnector as DB-Driver and NPoco ORM
     internal abstract class DBHelper
     {
         // admin account
@@ -24,6 +26,7 @@ namespace WinFormsChElementsNPoco
             int count = 0;
             try
             {
+                // separate ConnectionString to access database as admin: information_schema
                 using MySqlConnection connection = new MySqlConnection(ConnectionStringAdmin);
                 connection.Open();
 
@@ -64,6 +67,7 @@ namespace WinFormsChElementsNPoco
                 using MySqlCommand cmdCreateDb = new MySqlCommand(sqlCreateDB, connection);
                 cmdCreateDb.ExecuteNonQuery();
 
+                // switch to use newly created database
                 connection.ChangeDatabase("ChElements");
                 using MySqlCommand cmdCreateTable = new MySqlCommand(sqlCreateTable, connection);
                 count = cmdCreateTable.ExecuteNonQuery();
@@ -112,7 +116,7 @@ namespace WinFormsChElementsNPoco
             {
                 Debug.WriteLine(ex);
             }
-            return element ?? new ChElement();
+            return element ?? new ChElement();      // ?? -> check if element is null
         }
         
         public static void AddOne(ChElement element)

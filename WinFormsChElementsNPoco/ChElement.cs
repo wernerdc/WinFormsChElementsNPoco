@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WinFormsChElementsNPoco
 {
-    [TableName("element")]          // DB table name is different from class name
+    [TableName("element")]          // NPoco annotation: DB table name is different to class name
     internal class ChElement
     {
         private static string[] s_zustaende = ["Unbekannt", "Gas", "Feststoff", "Flüssigkeit"];
@@ -28,7 +28,7 @@ namespace WinFormsChElementsNPoco
         public string Name { get; set; }
         public string Symbol { get; set; }
         public int Zustand { get; set; }
-        [Ignore]            // ignonres property that isn't represented in the DB
+        [Ignore]            // NPoco annotation: ignonres property that isn't represented in the DB
         public string ZustandName 
         { 
             get { return s_zustaende[Zustand]; } 

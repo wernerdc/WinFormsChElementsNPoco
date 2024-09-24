@@ -36,14 +36,14 @@ namespace WinFormsChElementsNPoco
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
 
-            // Initialize custom columns
+            // Initialize custom columns, to display needed columns only
             dataGridView1.AutoGenerateColumns = false;
             DataGridViewColumn column1 = new DataGridViewTextBoxColumn();
-            column1.DataPropertyName = "id";
-            column1.Name = "ID";
+            column1.DataPropertyName = "id";        // property name of ChElement class
+            column1.Name = "ID";                    // name of displayed column name
             column1.MinimumWidth = 25;
-            column1.FillWeight = 20;
-            column1.DefaultCellStyle = new DataGridViewCellStyle() { 
+            column1.FillWeight = 20;                // relative width (used by DataGridViewAutoSizeColumnsMode.Fill)
+            column1.DefaultCellStyle = new DataGridViewCellStyle() {            // set column alignment
                     Alignment = DataGridViewContentAlignment.MiddleCenter };
             DataGridViewColumn column2 = new DataGridViewTextBoxColumn();
             column2.DataPropertyName = "Ordnungszahl";
@@ -73,7 +73,7 @@ namespace WinFormsChElementsNPoco
 
         private void UpdateDataGridView(List<ChElement> list)
         {
-            //list.Add(DBHelper.GetOne(3));       // single querry test
+            //list.Add(DBHelper.GetOne(3));       // single query test
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = list;
         }
@@ -88,6 +88,7 @@ namespace WinFormsChElementsNPoco
             //ChElement? element = dataGridView1.CurrentRow.DataBoundItem as ChElement;
             //if (element == null)
             //  return;
+            // is the same as:
             if (dataGridView1.CurrentRow.DataBoundItem is not ChElement element)
                 return;
 
