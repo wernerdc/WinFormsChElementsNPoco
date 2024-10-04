@@ -11,7 +11,7 @@ namespace WinFormsChElementsNPoco
         public Form1()
         {
             InitializeComponent();
-            InitDatabase();
+            //InitDatabase();
             InitDataGridView();
             comboBoxZustand.SelectedIndex = 0;
         }
@@ -107,7 +107,7 @@ namespace WinFormsChElementsNPoco
                 return;
 
             ChElement editedElement = GetElementFromInput();
-            editedElement.ID = element.ID;
+            editedElement.Id = element.Id;
 
             DBHelper.UpdateOne(editedElement);
             UpdateDataGridView(DBHelper.GetAll());
@@ -132,10 +132,10 @@ namespace WinFormsChElementsNPoco
             //int oZahl = (int.TryParse(textBoxOZahl.Text, out int n)) ? n : 0;
             int oZahl = decimal.ToInt32(numUpDownOZahl.Value);
             ChElement element = new ChElement(
+                    comboBoxZustand.SelectedIndex +1,
                     oZahl,
                     textBoxName.Text,
-                    textBoxSymbol.Text,
-                    comboBoxZustand.SelectedIndex);
+                    textBoxSymbol.Text);
 
             return element;
         }
@@ -144,7 +144,7 @@ namespace WinFormsChElementsNPoco
             numUpDownOZahl.Value = element.Ordnungszahl;
             textBoxName.Text = element.Name;
             textBoxSymbol.Text = element.Symbol;
-            comboBoxZustand.SelectedIndex = element.Zustand;
+            comboBoxZustand.SelectedIndex = element.ZustandId -1;
         }
     }
 }

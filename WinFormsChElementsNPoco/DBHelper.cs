@@ -53,22 +53,33 @@ namespace WinFormsChElementsNPoco
                 using MySqlConnection connection = new MySqlConnection(ConnectionStringAdmin);
                 connection.Open();
                 // # Datenbank erstellen
-                string sqlCreateDB = "CREATE DATABASE ChElements";
+                string sqlCreateDB = "CREATE DATABASE chelements";
                 // # Tabelle für Kontakte erstellen
-                string sqlCreateTable = "CREATE TABLE element(" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "ordnungszahl INT(3), " +
-                        "name VARCHAR(50)," +
-                        "symbol VARCHAR(2)," +
-                        "zustand INT(1)," +
-                        "changedAt DATETIME," +
-                        "createdAt DATETIME)";
+                string sqlCreateTable = @"
+                    CREATE TABLE zustand (
+	                    Id INT AUTO_INCREMENT PRIMARY KEY,
+	                    Name VARCHAR(20)
+                    );
+
+                    INSERT INTO zustand (Name)
+                    VALUES ('Unbekannt'), ('Gas'), ('Feststoff'), ('Flüssigkeit');
+                    
+                    CREATE TABLE element(
+                        Id INT AUTO_INCREMENT PRIMARY KEY, 
+                        ZustandId INT(1),
+                        Ordnungszahl INT(3), 
+                        Name VARCHAR(50),
+                        Symbol VARCHAR(2),
+                        ChangedAt DATETIME,
+                        CreatedAt DATETIME,
+                        FOREIGN KEY (ZustandID) REFERENCES zustand(Id)
+                    );";
 
                 using MySqlCommand cmdCreateDb = new MySqlCommand(sqlCreateDB, connection);
                 cmdCreateDb.ExecuteNonQuery();
 
                 // switch to use newly created database
-                connection.ChangeDatabase("ChElements");
+                connection.ChangeDatabase("chelements");
                 using MySqlCommand cmdCreateTable = new MySqlCommand(sqlCreateTable, connection);
                 count = cmdCreateTable.ExecuteNonQuery();
             }
@@ -90,7 +101,12 @@ namespace WinFormsChElementsNPoco
                 using MySqlConnection connection = new MySqlConnection(ConnectionString);
                 using Database db = new Database(connection);
                 connection.Open();
-                string sql = "ORDER BY ordnungszahl";
+                string sql = @"SELECT e.*, z.name AS ZustandName
+                    FROM element e
+                    JOIN zustand z ON e.ZustandId = z.Id
+                    ORDER BY Ordnungszahl";
+
+                //string sql = "ORDER BY ordnungszahl";
                 list = db.Fetch<ChElement>(sql);
             }
             catch (Exception ex)
@@ -108,9 +124,14 @@ namespace WinFormsChElementsNPoco
                 using MySqlConnection connection = new MySqlConnection(ConnectionString);
                 using Database db = new Database(connection);
                 connection.Open();
-                element = db.SingleById<ChElement>(id);
+                //element = db.SingleById<ChElement>(id);
                 //string sql = "WHERE id = @0";
-                //element = db.Single<ChElement>("WHERE id = @0", id);
+                string sql = @"
+                    SELECT e.*, z.name AS ZustandName
+                    FROM element e
+                    JOIN zustand z ON e.ZustandId = z.Id
+                    WHERE Id = @0";
+                element = db.Single<ChElement>(sql, id);
             }
             catch (Exception ex)
             {
