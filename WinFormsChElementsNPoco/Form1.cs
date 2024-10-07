@@ -11,7 +11,7 @@ namespace WinFormsChElementsNPoco
         public Form1()
         {
             InitializeComponent();
-            //InitDatabase();
+            InitDatabase();
             InitDataGridView();
             comboBoxZustand.SelectedIndex = 0;
         }
@@ -22,7 +22,7 @@ namespace WinFormsChElementsNPoco
             {
                 if (!DBHelper.CreateDatabase())
                 {
-                    MessageBox.Show("Database creation failed!", "ChElements", 
+                    MessageBox.Show("Database creation failed!", "chelements", 
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }

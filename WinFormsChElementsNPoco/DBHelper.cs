@@ -89,7 +89,7 @@ namespace WinFormsChElementsNPoco
                 return false;
             }
             
-            Debug.WriteLine($"DBHelper - Tables created: {count +1}");
+            Debug.WriteLine($"DBHelper - Tables created, rows affected: {count}");
             return (count >= 0);
         }
 
@@ -101,7 +101,8 @@ namespace WinFormsChElementsNPoco
                 using MySqlConnection connection = new MySqlConnection(ConnectionString);
                 using Database db = new Database(connection);
                 connection.Open();
-                string sql = @"SELECT e.*, z.name AS ZustandName
+                string sql = @"
+                    SELECT e.*, z.name AS ZustandName
                     FROM element e
                     JOIN zustand z ON e.ZustandId = z.Id
                     ORDER BY Ordnungszahl";
