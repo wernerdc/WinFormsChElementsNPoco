@@ -82,7 +82,7 @@
             label4.Name = "label4";
             label4.Size = new Size(50, 15);
             label4.TabIndex = 11;
-            label4.Text = "Zustand";
+            label4.Text = "ChZustand";
             // 
             // label3
             // 

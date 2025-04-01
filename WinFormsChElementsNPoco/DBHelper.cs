@@ -101,13 +101,22 @@ namespace WinFormsChElementsNPoco
                 using MySqlConnection connection = new MySqlConnection(ConnectionString);
                 using Database db = new Database(connection);
                 connection.Open();
+                // maps the result of the query to the ChElement class -> ZustandName is filled by raw SQL-Join query + renamed column
+                /*
                 string sql = @"
                     SELECT e.*, z.name AS ZustandName
                     FROM element e
                     JOIN zustand z ON e.ZustandId = z.Id
                     ORDER BY Ordnungszahl";
+                */
 
-                //string sql = "ORDER BY ordnungszahl";
+                // using NPocos [complexMapping] to map the result of the query to the ChElement class + nested ChZustand class => Zustand
+                string sql = @"
+                    SELECT e.*, z.*
+                    FROM element e
+                    JOIN zustand z ON e.ZustandId = z.Id
+                    ORDER BY Ordnungszahl";
+
                 list = db.Fetch<ChElement>(sql);
             }
             catch (Exception ex)
@@ -132,6 +141,7 @@ namespace WinFormsChElementsNPoco
                     FROM element e
                     JOIN zustand z ON e.ZustandId = z.Id
                     WHERE Id = @0";
+
                 element = db.Single<ChElement>(sql, id);
             }
             catch (Exception ex)

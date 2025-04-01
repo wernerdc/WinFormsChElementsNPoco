@@ -1,17 +1,16 @@
-﻿using NPoco;
+﻿//using NPoco;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using ColumnAttribute = NPoco.ColumnAttribute;
 
 namespace WinFormsChElementsNPoco
 {
-    [TableName("element")]          // NPoco annotation: DB table name is different to class name
-    [PrimaryKey("Id")]
-    internal class ChElement
+    [NPoco.TableName("element")]          // NPoco annotation: DB table name is different to class name
+    [NPoco.PrimaryKey("Id")]
+    class ChElement
     {
         public ChElement() { }
         public ChElement(int zustand, int ordnungszahl, string name, string symbol)
@@ -30,7 +29,14 @@ namespace WinFormsChElementsNPoco
 
         // NPoco annotation: ResultColumn ignonres property on update/insert that isn't represented in the table.
         // The property is filled and mapped by raw SQL-Join query in DBHelper
-        [ResultColumn]            
-        public string ZustandName { get; set; } = String.Empty;
+        [NPoco.ResultColumn]            
+        public string? ZustandName 
+        {
+            get { return Zustand?.Name; }
+        }
+
+        [NPoco.ResultColumn]
+        [NPoco.ComplexMapping]
+        public ChZustand? Zustand { get; set; }
     }
 }

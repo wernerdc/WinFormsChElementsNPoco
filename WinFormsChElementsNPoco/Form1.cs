@@ -39,7 +39,7 @@ namespace WinFormsChElementsNPoco
             // Initialize custom columns, to display needed columns only
             dataGridView1.AutoGenerateColumns = false;
             DataGridViewColumn column1 = new DataGridViewTextBoxColumn();
-            column1.DataPropertyName = "id";        // property name of ChElement class
+            column1.DataPropertyName = "Id";        // property name of ChElement class
             column1.Name = "ID";                    // name of displayed column name
             column1.MinimumWidth = 25;
             column1.FillWeight = 20;                // relative width (used by DataGridViewAutoSizeColumnsMode.Fill)
